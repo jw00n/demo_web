@@ -33,4 +33,4 @@ jobs:
       run: chmod +x ./demo/gradlew
       
     - name: Build with Gradle
-      run: ./demo_web/demo/gradlew build 
+      run: ./demo_web/demo_web/demo/gradlew build 
