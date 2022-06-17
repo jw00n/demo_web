@@ -30,7 +30,7 @@ jobs:
         distribution: 'temurin'
     
     - name: Grand execute permisson for gradlew
-      run: chomdw +x gradlew
+      run: chmod +x gradlew
       
     - name: Build with Gradle
       run: ./demo/gradlew build
