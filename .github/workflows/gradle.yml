@@ -28,7 +28,10 @@ jobs:
       with:
         java-version: '8'
         distribution: 'temurin'
-        
+    
+    - name: Grand execute permisson for gradlew
+      run: chomdw +x gradlew
+      
     - name: Build with Gradle
       run: ./demo/gradlew build
 
