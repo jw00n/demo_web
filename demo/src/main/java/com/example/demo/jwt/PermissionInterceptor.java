@@ -1,6 +1,5 @@
 package com.example.demo.jwt;
 
-import java.net.http.HttpRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
