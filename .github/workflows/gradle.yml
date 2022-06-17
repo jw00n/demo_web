@@ -33,6 +33,6 @@ jobs:
       run: chmod +x ./demo/gradlew
       
     - name: Build with Gradle
-      run: ./demo/gradlew clean build
+      run: ~/.gradlew clean build
 
 
