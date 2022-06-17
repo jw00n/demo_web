@@ -29,7 +29,7 @@ jobs:
         java-version: '8'
         distribution: 'temurin'
     - name: gragnt Execute persmiison
-      run: chomod +x gradlew
+      run: chmod +x gradlew
       
     - name: Build with Gradle
       run : ./demo/gradlew build
