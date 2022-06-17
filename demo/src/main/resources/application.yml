@@ -1,0 +1,43 @@
+server:
+  port: 8080
+  
+spring:
+   profiles:
+      group: secret
+   h2:
+      console:
+         enabled: true
+         
+   jwt:
+        header: Authorization
+        #HS512 알고리즘을 사용할 것이기 때문에 512bit, 즉 64byte 이상의 secret key를 사용해야 한다.
+        # 파워셀로 하면 됨.
+        #echo 'silvernine-tech-spring-boot-jwt-tutorial-secret-silvernine-tech-spring-boot-jwt-tutorial-secret'|base64
+        secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+        token-validity-in-seconds: 86400 #유효 시간
+    datasource:
+       driver-class-name: com.mysql.cj.jdbc.Driver  # JDBC 드라이버 정보 설정
+       url: jdbc:mysql://localhost:3306/info?serverTimezone=Asia/Seoul  # DB 연결 정보 설정
+       username: root  # DB 계정 설정
+       password: momo_thesimple  # DB 비밀번호 설정
+       initialization-mode: never #초기설정에선 always 로 할것것
+   
+
+   jpa:
+      database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+      defer-datasource-initialization: false #초기화 #처음에는 true로 할 것.
+     
+      hibernate:
+         ddl-auto: update
+      properties:
+            hibernate:
+               format_sql: false
+               show_sql: false
+      
+     
+
+
+logging:
+   level:
+      com.example: DEBUG
+  

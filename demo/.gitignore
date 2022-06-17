@@ -6,9 +6,10 @@ build/
 !**/src/test/**/build/
 
 # ignore yml file
-application-secret.yml
+
 
 ### STS ###
+application-secret.yml
 .apt_generated
 .classpath
 .factorypath
@@ -19,6 +20,7 @@ application-secret.yml
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
+
 
 ### IntelliJ IDEA ###
 .idea
