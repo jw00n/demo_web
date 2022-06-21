@@ -1,0 +1,62 @@
+security 에 jwt를 적용하는 것이고
+
+DB 연결용이 repository 인듯
+
+
+spring security 에서 중요한 부분이 UserDetailService
+
+
+
+
+로그인 api 완성!
+
+
+  
+	  function loginPost(){
+		  var formdata = $("#loginForm").serializeArray();
+		  var object ={};
+		  
+		  for (var i = 0; i < formdata.length; i++){
+			    object[formdata[i]['name']] = formdata[i]['value'];
+			}
+		  var json = JSON.stringify(object);
+	
+		  
+		  
+		  $.ajax({
+			  cache:false,
+			  url: '/api/authenticate',
+			  type: 'POST',
+			  contentType : 'application/json',
+			  dataType : 'json',
+			  data: json,
+			  success: function(response){
+				  //response = jwt 토콘
+				 
+					  //var jsonData =JSON.parse(response);
+				  window.localStorage.setItem('token',response['token']);
+				  	//console.log(jsonData.token);
+				  //localstorage에 저장
+			  }
+		  });
+	  }
+	  
+	  function userPost(){
+		  var token = window.localStorage.getItem('token');
+		  
+		  //헤더에 넣어야지
+		  $.ajax({
+			  url:'/api/user',
+			  type:'GET',
+			  beforeSend: function(xhr){
+				  xhr.setRequestHeader("Content-type","application/json");
+				  xhr.setRequestHeader("Authorization","Bearer "+token);
+			  },
+			  success: function(response){
+				  //추후에 쓸만한것들은 저장해두는게 좋겠다
+				  //window.localStorage.setItem('info')
+				  location.href='/index/userpage';
+			  }
+				  
+		  })
+	  }
