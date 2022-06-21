@@ -35,6 +35,10 @@ dependencies {
 	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+	
+	// https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-servlet-api
+	implementation group: 'org.apache.tomcat', name: 'tomcat-servlet-api', version: '9.0.64'
+	
 }
 
 tasks.named('test') {
