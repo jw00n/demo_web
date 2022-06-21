@@ -1,31 +1,28 @@
-server:
-  port: 8080
+
   
 spring:
-  
-   h2:
-      console:
-         enabled: true
-         
- 
+
    datasource:
        driver-class-name: com.mysql.cj.jdbc.Driver  # JDBC 드라이버 정보 설정
-       url: jdbc:mysql://localhost:3306/info?serverTimezone=Asia/Seoul  # DB 연결 정보 설정
-       username: root  # DB 계정 설정
-       password: momo_thesimple  # DB 비밀번호 설정
-       initialization-mode: never #초기설정에선 always 로 할것것
-   
+       url: jdbc:mysql://demodb.cac0hgevyvhw.ap-northeast-2.rds.amazonaws.com:3306/demoInfo?serverTimezone=Asia/Seoul
+       #jdbc:mysql://localhost:3306/info?serverTimezone=Asia/Seoul  # DB 연결 정보 설정
+       username: momoAdmin
+       #root  # DB 계정 설정
+       password: wld_dj12
+       # DB 비밀번호 설정
+       initialization-mode: never
+       #초기설정에선 always 로 할것것
 
    jpa:
-      database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
       defer-datasource-initialization: false #초기화 #처음에는 true로 할 것.
+      database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
      
       hibernate:
          ddl-auto: update
       properties:
             hibernate:
-               format_sql: false
-               show_sql: false
+               format_sql: true
+               show_sql: true
       
      
 jwt:

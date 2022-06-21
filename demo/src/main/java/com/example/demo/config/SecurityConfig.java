@@ -47,8 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.ignoring()
 			.requestMatchers(PathRequest.toStaticResources().atCommonLocations())
 			.antMatchers(
-					"/h2-console/**"
-					,"/favicon.ico"
+					 "/favicon.ico"
 					,"/resources/**"
 					);
 	}
