@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +26,7 @@ import com.example.demo.jwt.JwtFilter;
 import com.example.demo.service.UserService;
 
 //UserService의 메소드를 호출할 UserController 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = {"/api"}, method = {RequestMethod.POST, RequestMethod.GET})
 public class UserController {
@@ -46,11 +48,17 @@ public class UserController {
 	
 	@GetMapping("/user")
 	@PreAuthorize("hasAnyRole('USER','ADMIN')")
-	public ResponseEntity<User> getMyUserInfo(){
-		ResponseEntity<User> userInfo=ResponseEntity.ok(userService.getUserWithAuthorities().get());
-		httpSession.setAttribute("userinfo",userInfo); //세션에 저장해서 서버단에서 사용
+	public ResponseEntity<UserInfoDto> getMyUserInfo(){
+		UserInfoDto userinfodto = new UserInfoDto(
+			userService.getUserWithAuthorities().get().getUserId(),
+			userService.getUserWithAuthorities().get().getUsername(),
+			userService.getUserWithAuthorities().get().getNickname()
+			);
+			
 		
-		return userInfo;
+		//httpSession.setAttribute("userinfo",userInfo); //세션에 저장해서 서버단에서 사용
+		
+		return ResponseEntity.ok(userinfodto);
 	}//두가지 권한 모두 허용, 
 	
 	@GetMapping("/user/{username}")
