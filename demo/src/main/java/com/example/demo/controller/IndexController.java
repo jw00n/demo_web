@@ -63,8 +63,6 @@ public class IndexController {
 		model.addAttribute("nickname", nickname); // 여기서 머스테치로 넘어가줌.
 		}
 		return "test";
-	
-
 	}
 
 	//에러페이지 ㅎㅎ..
