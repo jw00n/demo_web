@@ -60,7 +60,6 @@ public class UserController {
 	@GetMapping("/user/{username}")
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<User> getUserInfo(@PathVariable String username){
-		
 		return ResponseEntity.ok(userService.getUserWithAuthorities(username).get());
 	}//admin만 허용 //username 파라미터를 기준으로 유저정보와 권한 정보를 리턴하는 api 
 	
