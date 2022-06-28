@@ -31,6 +31,7 @@ deploy:
      aci: private
      local_dir: deploy
      wait-until-deployed: true
+     on: all_branches: true #해당 라인 추가
    
 notifications:
    email:
