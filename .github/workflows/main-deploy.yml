@@ -13,23 +13,30 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@master
+      
+      - name : Set up JDK 1.8 # 자바 버전
+        uses: actions/setup-java@v1
+        with:
+          distribution: 'adopt'
+          java-version: '8'
+      
+      - name : Grant execute permission for gradlew # 권한 추가
+        run: sudo chmod +x ./gradlew
+        shell: bash
  
-      - name: Cache node modules
+      - name: Cache
         uses: actions/cache@v1
         with:
-          path: node_modules
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
           key: ${{ runner.OS }}-build-${{ hashFiles('**/*.gradle*','**/gradle-wrapper.properties') }}
           restore-keys: |
-            ${{ runner.OS }}-build-
-            ${{ runner.OS }}-
+             ${{ runner.os }}-gradle-
  
-      - name: Install Dependencies
-        run: npm install
- 
-      - name: Build
-        run: npm run build
-        env:
-          CI: ''
+      - name : Build with Gradle # gradle로 빌드
+        run: ./gradlew clean build
+        shell: bash
  
       - name: Deploy
         env:
