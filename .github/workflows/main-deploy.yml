@@ -21,7 +21,7 @@ jobs:
           java-version: '8'
       
       - name : Grant execute permission for gradlew # 권한 추가
-        run: sudo chmod +x /home/ubuntu/demo_web/demo_web/demo/gradlew
+        run: chmod +x ./gradlew
         shell: bash
  
       - name: Cache
