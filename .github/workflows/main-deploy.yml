@@ -18,7 +18,7 @@ jobs:
         uses: actions/cache@v1
         with:
           path: node_modules
-          key: ${{ runner.OS }}-build-${{ hashFiles('**/build.gradle') }}
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/*.gradle*','**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.OS }}-build-
             ${{ runner.OS }}-
