@@ -1,0 +1,18 @@
+language : java
+jdk: 
+   -openjdk8
+   
+branches:
+   only:
+   - master
+   
+# travis 서버의 home
+cache :
+   directories:
+      - '$HOME/.m2/repository'
+      - '$HOME/.gradle'
+      - "./gradlew clean build"
+notifications:
+   email:
+      recipients:
+         - jw00n0212@gmail.com
