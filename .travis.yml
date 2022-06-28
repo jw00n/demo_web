@@ -11,7 +11,10 @@ cache :
    directories:
       - '$HOME/.m2/repository'
       - '$HOME/demo/.gradle'
-script : "./gradlew clean build"
+script : 
+   - cd demo
+   - ./gradlew clean build
+
 notifications:
    email:
       recipients:
