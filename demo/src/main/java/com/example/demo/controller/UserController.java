@@ -36,9 +36,7 @@ public class UserController {
 	public UserController(UserService userService, HttpSession httpSession) {
 		this.userService = userService;
 		this.httpSession = httpSession;
-		
 	}
-	
 	
 	@PostMapping("/signup") // /api/signup
 	public ResponseEntity<User> signup(@Valid@RequestBody   UserDto userDto)//@RequestBody
