@@ -54,10 +54,6 @@ public class UserController {
 			userService.getUserWithAuthorities().get().getUsername(),
 			userService.getUserWithAuthorities().get().getNickname()
 			);
-			
-		
-		//httpSession.setAttribute("userinfo",userInfo); //세션에 저장해서 서버단에서 사용
-		
 		return ResponseEntity.ok(userinfodto);
 	}//두가지 권한 모두 허용, 
 	
