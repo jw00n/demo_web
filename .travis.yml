@@ -4,14 +4,17 @@ jdk:
    
 branches:
    only:
-   - master
+   - main
    
 # travis 서버의 home
 cache :
    directories:
       - '$HOME/.m2/repository'
-      - '$HOME/.gradle'
-      - "./gradlew clean build"
+      - '$HOME/demo/.gradle'
+script : 
+   - cd demo
+   - ./gradlew clean build
+
 notifications:
    email:
       recipients:
