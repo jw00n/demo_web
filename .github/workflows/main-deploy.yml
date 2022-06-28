@@ -9,6 +9,8 @@ on:
  
 jobs:
   deploy:
+    env:
+      working-directory: /home/runner/work/demo_web/demo_web/demo
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout source code
@@ -21,8 +23,9 @@ jobs:
           java-version: '8'
       
       - name : Grant execute permission for gradlew # 권한 추가
-        run: chmod +x /home/runner/work/demo_web/demo_web/demo/gradlew
+        run: chmod +x gradlew
         shell: bash
+        working-directory: ${{env.working-directory}}
  
       - name: Cache
         uses: actions/cache@v1
@@ -35,13 +38,15 @@ jobs:
              ${{ runner.os }}-gradle-
  
       - name : Build with Gradle # gradle로 빌드
-        run:  /home/runner/work/demo_web/demo_web/demo/gradlew clean build
+        run:  ./gradlew clean build
         shell: bash
+        working-directory: ${{env.working-directory}}
  
       - name: Deploy
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          SOURCE_DIR: '/home/runner/work/demo_web/demo_web/demo/build/libs/'
         run: |
           aws s3 cp \
             --recursive \
