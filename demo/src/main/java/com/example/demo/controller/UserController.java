@@ -64,17 +64,4 @@ public class UserController {
 		return ResponseEntity.ok(userService.getUserWithAuthorities(username).get());
 	}//admin만 허용 //username 파라미터를 기준으로 유저정보와 권한 정보를 리턴하는 api 
 	
-	
-	
-	@GetMapping("/findInfo/{id}")
-	public void findInfo(@PathVariable Long id) throws IOException {
-		UserInfoDto userInfoDto = userService.findByUserId(id);
-		String  nickname= userInfoDto.getNickname();
-		System.out.println("여기 " + nickname);
-	}
-	
-
-
-	
-
 }
