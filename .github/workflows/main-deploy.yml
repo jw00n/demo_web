@@ -35,7 +35,7 @@ jobs:
              ${{ runner.os }}-gradle-
  
       - name : Build with Gradle # gradle로 빌드
-        run: ./gradlew clean build
+        run:  /home/runner/work/demo_web/demo_web/demo/gradlew clean build
         shell: bash
  
       - name: Deploy
