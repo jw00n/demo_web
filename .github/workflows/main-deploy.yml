@@ -1,0 +1,54 @@
+# main-deploy.yml
+ 
+name: Deploy to Production
+ 
+on:
+  push:
+    branches:
+      - main
+ 
+jobs:
+  deploy:
+    env:
+      working-directory: /home/runner/work/demo_web/demo_web/demo
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@master
+      
+      - name : Set up JDK 1.8 # 자바 버전
+        uses: actions/setup-java@v1
+        with:
+          distribution: 'adopt'
+          java-version: '8'
+      
+      - name : Grant execute permission for gradlew # 권한 추가
+        run: chmod +x gradlew
+        shell: bash
+        working-directory: ${{env.working-directory}}
+ 
+      - name: Cache
+        uses: actions/cache@v1
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/*.gradle*','**/gradle-wrapper.properties') }}
+          restore-keys: |
+             ${{ runner.os }}-gradle-
+ 
+      - name : Build with Gradle # gradle로 빌드
+        run:  ./gradlew clean build
+        shell: bash
+        working-directory: ${{env.working-directory}}
+ 
+      - name: Deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          SOURCE_DIR: '/home/runner/work/demo_web/demo_web/demo/build/libs/'
+        run: |
+          aws s3 cp \
+            --recursive \
+            --region ap-northeast-2 \
+            build s3://momo-demo-build
