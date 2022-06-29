@@ -21,7 +21,7 @@ before_deploy:
    - pwd
    - mkdir -p before_deploy
    - cp demo/scripts/*.sh before_deploy/
-   - cp appsec.yml before_deploy/
+   - cp appspec.yml before_deploy/
    - cp demo/build/libs/*.jar before_deploy/
    
    -  pwd
