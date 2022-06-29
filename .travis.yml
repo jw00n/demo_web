@@ -17,7 +17,7 @@ script :
 
 before_deploy:
    
-   - cd ..
+   - cd $HOME
    - pwd
    - mkdir -p before_deploy
    - cp demo/scripts/*.sh before_deploy/
@@ -30,6 +30,7 @@ before_deploy:
    - pwd
    - cd ../ && mkdir -p deploy
    - mv before_deploy/before_deploy.zip deploy/demo_web.zip
+   
 
 deploy:
    - provider: s3
