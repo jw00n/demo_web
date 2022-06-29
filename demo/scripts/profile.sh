@@ -1,16 +1,17 @@
 # 쉬고있는 profile 찾기
 
 function find_idle_profile(){
-    RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost/profile)
+    
+    RESPONSE_CODE=$(curl -L -s -o /dev/null -w "%{http_code}" https://momodemo.ddns.net/profile)
     
     if [ ${RESPONSE_CODE} -ge 400 ] # 400 보다 크면 (즉, 40x/50x 에러 모두 포함)
     then
         CURRENT_PROFILE=prof2
     else
-        CURRENT_PROFILE=$(curl -s http://localhost/profile)
+        CURRENT_PROFILE=$(curl -L -s https://momodemo.ddns.net/profile)
     fi
 
-    if [ ${CURRENT_PROFILE} == prof1 ]
+    if [ ${CURRENT_PROFILE} == prof1]
     then
       IDLE_PROFILE=prof2
     else
