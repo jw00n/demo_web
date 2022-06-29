@@ -19,7 +19,7 @@ public class ProfileController {
 	public String profile() {
 		List<String> profiles =Arrays.asList(env.getActiveProfiles());
 		
-		List<String> realProfiles= Arrays.asList("secret","db");
+		List<String> realProfiles= Arrays.asList("prof1","prof2");
 		String defaultProfile = profiles.isEmpty()? "default" : profiles.get(0);
 		
 		return profiles.stream().filter(realProfiles::contains).findAny().orElse(defaultProfile);
