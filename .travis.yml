@@ -16,11 +16,20 @@ script :
    - ./gradlew clean build
 
 before_deploy:
+   
    - cd ..
    - pwd
-   - zip -r demo_web *
-   - mkdir -p deploy
-   - mv demo_web.zip deploy/demo_web.zip
+   - mkdir -p before_deploy
+   - cp demo/scripts/*.sh before_deploy/
+   - cp appsec.yml before_deploy/
+   - cp demo/build/libs/*.jar before_deploy/
+   
+   -  pwd
+   - cd before_deploy && zip -r before_deploy * 
+   
+   - pwd
+   - cd ../ && mkdir -p deploy
+   - mv before-deploy/before_deploy.zip deploy/demo_web.zip
 
 deploy:
    - provider: s3
