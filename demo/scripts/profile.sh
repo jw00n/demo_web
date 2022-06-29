@@ -10,7 +10,7 @@ function find_idle_profile(){
         CURRENT_PROFILE=$(curl -s http://localhost/profile)
     fi
 
-    if [ ${CURRENT_PROFILE} == real1 ]
+    if [ ${CURRENT_PROFILE} == prof1 ]
     then
       IDLE_PROFILE=prof2
     else
