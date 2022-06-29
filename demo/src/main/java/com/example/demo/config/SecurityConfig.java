@@ -52,7 +52,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 					);
 	}
 	
-	//--------------만든 jwt 를 적용해보자 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
 		  http
@@ -80,7 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	          .and()
 	          .authorizeRequests()
 	          
-	          .antMatchers("/","/resources/**").permitAll()
+	          .antMatchers("/","/resources/**","/profile").permitAll()
 	          .antMatchers("/index/**").permitAll()
 	          .antMatchers("/api/**").permitAll()
 	          .antMatchers("/api/user/**").permitAll()
