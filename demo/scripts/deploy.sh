@@ -1,4 +1,4 @@
-REPOSITORY=/home/ubuntu/web/app/second/
+REPOSITORY=/home/ubuntu/web/app/second
 
 PROJECT_NAME=demo
 
