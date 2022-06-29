@@ -29,7 +29,7 @@ before_deploy:
    
    - pwd
    - cd ../ && mkdir -p deploy
-   - mv before-deploy/before_deploy.zip deploy/demo_web.zip
+   - mv before_deploy/before_deploy.zip deploy/demo_web.zip
 
 deploy:
    - provider: s3
