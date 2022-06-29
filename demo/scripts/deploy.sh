@@ -26,7 +26,7 @@ echo "> JAR_NAME: $JAR_NAME"
 
 echo "> 권한 추가"
 echo $JAR_NAME
-sudo chmod 777 $REPOSITORY/$JAR_NAME
+sudo chmod 777 $JAR_NAME
 
 
 echo "> $JAR_NAME 실행"
@@ -34,4 +34,4 @@ sudo nohup java -jar \
     -Dspring.config.location=classpath:/application.properties, 
     /home/ubuntu/web/app/application-db.properties,
     /home/ubuntu/web/app/application-secret.properties \ 
-    $REPOSITORY/$JAR_NAME 2>&1 &
+    $JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
