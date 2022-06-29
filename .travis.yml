@@ -16,10 +16,11 @@ script :
    - ./gradlew clean build
 
 before_deploy:
+   - cd ..
    - pwd
-   - zip -r momodemo-server *
+   - zip -r demo_web *
    - mkdir -p deploy
-   - mv momodemo-server.zip deploy/momodemo-server.zip
+   - mv demo_web.zip deploy/demo_web.zip
 
 deploy:
    - provider: s3
@@ -33,7 +34,20 @@ deploy:
      wait-until-deployed: true
      on: 
          all_branches: true
-   
+         
+   - provider: codedeploy
+     access_key_id: $AWS_ACCESS_KEY
+     secret_access_key: $AWS_SECRET_KEY
+     bucket: momo-demo-build
+     key: demo_web.zip
+     bundle_type: zip
+     application: momo-demoserver
+     deployment_group: momo-demoserver-group
+     region: ap-northeast-2
+     wait-until-deployed: true
+     on: 
+         all_branches: true
+    
 notifications:
    email:
       recipients:
