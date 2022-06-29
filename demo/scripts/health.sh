@@ -9,12 +9,12 @@ IDLE_PORT=$(find_idle_port)
 
 echo "> Health Check Start!"
 echo "> IDLE_PORT: $IDLE_PORT"
-echo "> curl -s http://localhost:$IDLE_PORT/profile "
+echo "> curl -L -s https://momodemo.ddns.net/profile "
 sleep 10
 
 for RETRY_COUNT in {1..10}
 do
-  RESPONSE=$(curl -s http://localhost:${IDLE_PORT}/profile)
+  RESPONSE=$(curl -L -s https://momodemo.ddns.net/profile)
   UP_COUNT=$(echo ${RESPONSE} | grep 'prof' | wc -l)
 
   if [ ${UP_COUNT} -ge 1 ]
