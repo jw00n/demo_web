@@ -10,14 +10,15 @@ branches:
 cache :
    directories:
       - '$HOME/.m2/repository'
-      - '$HOME/demo/.gradle'
+      - '$HOME/.gradle'
 script : 
+   - pwd
    - cd demo
    - ./gradlew clean build
 
 before_deploy:
    
-   - cd $HOME
+   - cd $HOME/build/jw00n/demo_web
    - pwd
    - mkdir -p before_deploy
    - cp demo/scripts/*.sh before_deploy/
