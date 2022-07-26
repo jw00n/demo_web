@@ -13,7 +13,7 @@ cache :
       - '$HOME/.gradle'
 script : 
    - pwd
-   - cd demo
+   - cd demo 
    - ./gradlew clean build
 
 before_deploy:

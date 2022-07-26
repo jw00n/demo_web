@@ -17,34 +17,42 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.LoginDto;
 import com.example.demo.dto.TokenDto;
-import com.example.demo.jwt.JwtFilter;
 import com.example.demo.jwt.TokenProvider;
+
 
 @RestController
 @RequestMapping("/api")
-public class AutoController { //로그인 api 용
+public class AutoController { // 로그인 api 용
 	private final TokenProvider tokenProvider;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder; // 얘는 뭐지
-	
+
+
 	public AutoController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
-		this.tokenProvider=tokenProvider;
-		this.authenticationManagerBuilder=authenticationManagerBuilder;
+		this.tokenProvider = tokenProvider;
+		this.authenticationManagerBuilder = authenticationManagerBuilder;
 	}
-	
+
 	@PostMapping("/authenticate")
-	public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto){
-		
-		UsernamePasswordAuthenticationToken authenticationToken=
-				new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
-		
+	public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
+
+		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+				loginDto.getUsername(), loginDto.getPassword());
+
 		Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		
-		String jwt= tokenProvider.createToken(authentication); //토큰 발부해주고
-		
+
+		TokenDto jwt = tokenProvider.createToken(authentication); // 토큰 발부
+
 		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer "+jwt);
+		//httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "ACCESS_TOKEN" + jwt.getAccessToken());
+		httpHeaders.add("ACCESS_TOKEN", "Bearer "+jwt.getRefreshToken());
+		httpHeaders.add("REFRESH_TOKEN", "Bearer "+jwt.getRefreshToken());
 		
-		 return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
+		//두 개의 토큰을 반환하는 
+		return new ResponseEntity<>(jwt, httpHeaders, HttpStatus.OK);
 	}
+
+	
+	
+
 }

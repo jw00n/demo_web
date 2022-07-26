@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.Optional;
 
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,36 +14,35 @@ import com.example.demo.dto.UserDto;
 import com.example.demo.dto.UserInfoDto;
 import com.example.demo.entity.Authority;
 import com.example.demo.entity.User;
+import com.example.demo.error.ApiException;
+import com.example.demo.error.ErrorType;
+
+import com.example.demo.jwt.TokenProvider;
+import com.example.demo.repository.RefreshTokenRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.util.RedisUtil;
 import com.example.demo.util.SecurityUtil;
+
+import lombok.RequiredArgsConstructor;
 
 //회원가입, 유저정보조회등의 메소드를 위한
 //어노테이션으로 mvc하는거 놀랍
+@RequiredArgsConstructor
 @Service 
 public class UserService {
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final TokenProvider tokenProvider;
+	private final RefreshTokenRepository refreshTokenRepository;
+	private final RedisUtil redisUtil;
+
 	
-	
-	
-	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-		this.userRepository = userRepository;
-		this.passwordEncoder = passwordEncoder;
-	}
-	
-	//회원가입 로직 수행 메소드
+	//General 회원가입 로직 수행 메소드
 	@Transactional
 	public User signup(UserDto userDto) {
-		/*
-		  'findOneWith...' 에서 findOne / With 로 나눠서 생각을 해주시면 좋을 것 같습니다. 
-		  findOne은  Returns a single entity 의 의미이고,
-		   With는 @EntityGraph 어노테이션과 관계가 있습니다.
-		    authorities도 함께 Fetch 하라는 의미입니다.
-			@EntityGraph 어노테이션을 검색해보시면 With에 대한 느낌이 오실 것으로 생각됩니다. 
-		  */
+	
 		if(userRepository.findOneWithAuthoritiesByUsername(userDto.getUsername()).orElse(null) !=null) {
 			throw new RuntimeException("이미 가입되어있는 유저.");
-			
 		}
 		//DB에 존재하지 않는 username일 경우 aurthority와 user정보를 생성해서 
 		Authority authority = Authority.builder()
@@ -84,10 +85,30 @@ public class UserService {
 	public UserInfoDto findByUserId(Long id){
 		User user = userRepository.findByUserId(id).orElseThrow(()-> new IllegalArgumentException("해당 사용자가 없습니다. id= "+id));
 		
-			return new UserInfoDto(user.getUserId(), user.getUsername(),user.getNickname());
+			return new UserInfoDto(user.getUserId(), user.getUsername(), user.getNickname());
 				
 	}
-	
-	
-	
+
+	//============= 로그아웃 ================
+	@Transactional
+	public String logout(String accessToken,String refreshToken){
+		
+		if(!tokenProvider.validateToken(accessToken)){
+			throw new ApiException(ErrorType.ACCESS_TOKEN_EXCEPTION);
+		}
+
+		//accessToken에서 authentication
+		Authentication authentication = tokenProvider.getAuthentication(accessToken);
+		
+		//DB에서 삭제
+		String username= authentication.getName();
+		System.out.println("Check username : " + username);
+		refreshTokenRepository.deleteByUsername(username);
+
+		//블랙리스트에 추가
+		Long expiration = tokenProvider.getExpiration(refreshToken);
+		redisUtil.setBlackList(accessToken, "accessToken",expiration);
+
+		return "success";
+	}
 }

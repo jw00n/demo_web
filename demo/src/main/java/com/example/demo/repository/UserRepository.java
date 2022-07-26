@@ -1,12 +1,10 @@
 package com.example.demo.repository;
 
-import java.util.List;
 import java.util.Optional;
+
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import com.example.demo.entity.User;
 
@@ -15,8 +13,14 @@ import com.example.demo.entity.User;
 public interface UserRepository extends JpaRepository<User, Long>{
 	@EntityGraph(attributePaths = "authorities")
 	//쿼리가 수행될때 lazy조회가 아니고 Eager조회로 authorites정보를 같이 가져오게 됨.
+	
+	
 	Optional<User> findOneWithAuthoritiesByUsername(String username);
 	//username을 기준으로 User정보를 가져올때 권한정보도 같이 가져옴
+	Optional<User> findOneWithAuthoritiesByPlatformAndUsername(String username,Integer platform);
 	
+	Optional<User> findByPlatformAndUsername(Integer platform,String username);
 	Optional<User> findByUserId(Long userId);
+	Optional<User> findByUsername(String username);	
+
 }

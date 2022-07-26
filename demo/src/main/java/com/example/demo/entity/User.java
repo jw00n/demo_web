@@ -1,12 +1,15 @@
 package com.example.demo.entity;
 
-
+import com.example.demo.dto.BaseTimeEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.ColumnDefault;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,14 +20,14 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User extends BaseTimeEntity {
 
    @Id
    @Column(name = "user_id")
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long userId;
 
-   @Column(name = "username", length = 50, unique = true)
+   @Column(name = "username", length = 50)
    private String username;
 
    @Column(name = "password", length = 100)
@@ -35,6 +38,10 @@ public class User {
 
    @Column(name = "activated")
    private boolean activated;
+
+   @Column(name = "platform")
+   @ColumnDefault("0") //default 0(General) // 1 = 구글 // 2= Naver  //3= Kakao
+   private Integer platform;
 
    @ManyToMany
    @JoinTable(

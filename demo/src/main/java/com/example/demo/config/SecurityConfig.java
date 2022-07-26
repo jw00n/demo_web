@@ -11,24 +11,30 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+
 import com.example.demo.jwt.JwtAccessDeniedHandler;
 import com.example.demo.jwt.JwtAuthenticationEntryPoint;
 import com.example.demo.jwt.JwtSecurityConfig;
 import com.example.demo.jwt.TokenProvider;
+import com.example.demo.service.CustomOAuth2UserService;
 
 @EnableWebSecurity //기본 웹보안
 @EnableGlobalMethodSecurity(prePostEnabled = true) // 나중에 preAuthorize 어노테이션을 메소드 단위로 추가하기위해서 사용.
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
+	private final CustomOAuth2UserService customOAuth2UserService; //추가
 	private final TokenProvider tokenProvider;
 	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 	private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+	
 	
 	//jwt패키지에서 만든거 주입
 	public SecurityConfig(
 			TokenProvider tokenProvider,
 			JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-			JwtAccessDeniedHandler jwtAccessDeniedHandler
+			JwtAccessDeniedHandler jwtAccessDeniedHandler, 
+			CustomOAuth2UserService customOAuth2UserService
 			) {
+		this.customOAuth2UserService=customOAuth2UserService;
 		this.tokenProvider =tokenProvider;
 		this.jwtAuthenticationEntryPoint=jwtAuthenticationEntryPoint;
 		this.jwtAccessDeniedHandler=jwtAccessDeniedHandler;
@@ -57,7 +63,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		  http
 	          // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
 	          .csrf().disable()
-	          
 	         
 	          .exceptionHandling() //예외를 핸들링할때 
 	          //만든 클래스를 핸들러로 추가해준다.
@@ -85,11 +90,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	          .antMatchers("/api/user/**").permitAll()
 	          .antMatchers("/api/authenticate").permitAll()
 	          .antMatchers("/api/signup").permitAll()
+			  .antMatchers("/login/**").permitAll()
+			  .antMatchers("/oauth2/**").permitAll()
 	          .anyRequest().authenticated()
-	
+	         
+	          //추가된 부분
 	          .and()
-	          .apply(new JwtSecurityConfig(tokenProvider));
-		  		//jwtFilter를 addFilterBefore로 등록했더 JwtSecurityConfig 클래스도 적용
+	          .apply(new JwtSecurityConfig(tokenProvider))
+			  //jwtFilter를 addFilterBefore로 등록했더 JwtSecurityConfig 클래스도 적용
+
+			  .and()
+			  .logout().logoutSuccessUrl("https://demofront.ddns.net/index/test")
+			  .and()
+			  .oauth2Login().userInfoEndpoint().userService(customOAuth2UserService);
+		  		
 		  
 	}
 	
